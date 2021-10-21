@@ -2,6 +2,11 @@
 os: linux
 dist: focal
 
+addons:
+  sonarcloud:
+    organization: iammateus
+    token: ${SONAR_TOKEN}
+
 # Linguagem Utilizada para Desenvolver a Aplicação                                                                                                                                                       
 language: python                                                                                                                                                                                         
 
@@ -16,6 +21,11 @@ install:
 # Defini o script de Teste que deve rodar toda vez que o código for alterado.                                                                                                                            
 script:                                                                                                                                                                                                  
   - pytest -v test.py
+
+# Defini o script de Teste que deve rodar toda vez que o código for alterado.                                                                                                                            
+script:                                                                                                                                                                                                  
+  - python -m unittest -v test || travis_terminate 1;
+  - sonar-scanner || travis_terminate 1;
 
 # Definir o Deploy no Heroku
 deploy:
